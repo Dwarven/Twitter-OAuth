@@ -7,12 +7,22 @@
 //
 
 #import "ViewController.h"
+#import "TwitterOAuthViewController.h"
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end
 
 @implementation ViewController
+
+- (IBAction)login:(id)sender {
+    TwitterOAuthViewController * twitterOAuthVC = [[TwitterOAuthViewController alloc] initWithCompletion:^(BOOL succeeded, id object) {
+        [_textView setText:[NSString stringWithFormat:@"%@",object]];
+    }];
+    [self presentViewController:twitterOAuthVC animated:YES completion:NULL];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
