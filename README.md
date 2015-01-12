@@ -7,6 +7,7 @@ add folder "TwitterOAuthViewController" to your project,import "TwitterOAuthView
 ```obj-c
 TwitterOAuthViewController * twitterOAuthVC = [[TwitterOAuthViewController alloc] initWithCompletion:^(BOOL succeeded, id object) {
     if (succeeded && object) {
+        NSLog(@"%@",object);
         //do something
     }
 }];
