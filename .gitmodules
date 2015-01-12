@@ -1,0 +1,3 @@
+[submodule "Vendor/oauthconsumer"]
+	path = Vendor/oauthconsumer
+	url = git@github.com:jdg/oauthconsumer.git
