@@ -19,9 +19,12 @@
 
 - (IBAction)login:(id)sender {
     TwitterOAuthViewController * twitterOAuthVC = [[TwitterOAuthViewController alloc] initWithCompletion:^(BOOL succeeded, id object) {
-        [_textView setText:[NSString stringWithFormat:@"%@",object]];
+        if (succeeded && object) {
+            [_textView setText:[NSString stringWithFormat:@"%@",object]];
+        }
     }];
-    [self presentViewController:twitterOAuthVC animated:YES completion:NULL];
+    UINavigationController * navC = [[UINavigationController alloc] initWithRootViewController:twitterOAuthVC];
+    [self presentViewController:navC animated:YES completion:NULL];
 }
 
 - (void)viewDidLoad {

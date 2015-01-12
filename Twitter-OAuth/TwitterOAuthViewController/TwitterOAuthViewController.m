@@ -34,15 +34,27 @@ NSString *callback = @"http://codegerms.com/callback";
     self = [super init];
     if (self) {
         _completion = completion;
+        [self setTitle:@"Twitter-OAuth"];
+        [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:self action:@selector(done)]];
     }
     return self;
 }
 
+- (void)done{
+    _completion(NO,nil);
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor grayColor]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
+    [label setText:@"Completed!"];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setCenter:self.view.center];
+    [self.view addSubview:label];
     if (!_webView) {
-        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT - 20)];
+        _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT - 64)];
         [_webView setDelegate:self];
         [self.view addSubview: _webView];
     }
