@@ -150,11 +150,10 @@ NSString *callback = @"http://codegerms.com/callback";
 - (void)didReceiveAccessToken:(OAServiceTicket*)ticket data:(NSData*)data {
     NSString* httpBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     _accessToken = [[OAToken alloc] initWithHTTPResponseBody:httpBody];
-    // WebServiceSocket *connection = [[WebServiceSocket alloc] init];
-    //  connection.delegate = self;
-    NSString *pdata = [NSString stringWithFormat:@"type=2&token=%@&secret=%@&login=%@", _accessToken.key, _accessToken.secret, self.isLogin];
-    // [connection fetch:1 withPostdata:pdata withGetData:@"" isSilent:NO];
-    NSLog(@"%@",_accessToken.secret);
+//    WebServiceSocket *connection = [[WebServiceSocket alloc] init];
+//    connection.delegate = self;
+//    NSString *pdata = [NSString stringWithFormat:@"type=2&token=%@&secret=%@&login=%@", _accessToken.key, _accessToken.secret, self.isLogin];
+//    [connection fetch:1 withPostdata:pdata withGetData:@"" isSilent:NO];
     
     
     
@@ -178,7 +177,13 @@ NSString *callback = @"http://codegerms.com/callback";
 
 - (void)didReceiveuserdata:(OAServiceTicket*)ticket data:(NSData*)data {
     NSString* httpBody = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:[httpBody dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil];
+    NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithDictionary:[NSJSONSerialization JSONObjectWithData:[httpBody dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:nil]];
+    if (_accessToken.key) {
+        [dic setValue:_accessToken.key forKey:@"token"];
+    }
+    if (_accessToken.secret) {
+        [dic setValue:_accessToken.secret forKey:@"secret"];
+    }
     _completion(YES,dic);
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
