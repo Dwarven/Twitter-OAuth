@@ -26,6 +26,14 @@
 
 #import "OADataFetcher.h"
 
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
 
 @implementation OADataFetcher
 
@@ -48,7 +56,9 @@
 																  data:responseData
 															didSucceed:NO];
 
-	[delegate performSelector:didFailSelector withObject:ticket withObject:error];
+    SuppressPerformSelectorLeakWarning(
+        [delegate performSelector:didFailSelector withObject:ticket withObject:error]
+    );
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -61,7 +71,9 @@
 																  data:responseData
 															didSucceed:[(NSHTTPURLResponse *)response statusCode] < 400];
 
-	[delegate performSelector:didFinishSelector withObject:ticket withObject:responseData];
+    SuppressPerformSelectorLeakWarning(
+        [delegate performSelector:didFinishSelector withObject:ticket withObject:responseData]
+    );
 }
 
 - (void)fetchDataWithRequest:(OAMutableURLRequest *)aRequest delegate:(id)aDelegate didFinishSelector:(SEL)finishSelector didFailSelector:(SEL)failSelector {

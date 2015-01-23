@@ -14,6 +14,14 @@
 #import "OAMutableURLRequest.h"
 #import "OACall.h"
 
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
 @interface OACall (Private)
 
 - (void)callFinished:(OAServiceTicket *)ticket withData:(NSData *)data;
@@ -97,7 +105,9 @@
 	self.ticket = aTicket;
 	if (ticket.didSucceed) {
 //		NSLog(@"Call body: %@", ticket.body);
-		[delegate performSelector:finishedSelector withObject:self withObject:ticket.body];
+        SuppressPerformSelectorLeakWarning(
+            [delegate performSelector:finishedSelector withObject:self withObject:ticket.body]
+        );
 	} else {
 //		NSLog(@"Failed call body: %@", ticket.body);
 		[self callFailed:ticket withError:nil];

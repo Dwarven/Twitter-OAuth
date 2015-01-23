@@ -13,6 +13,14 @@
 #import "OATokenManager.h"
 #import <UIKit/UIKit.h>
 
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
 @interface OATokenManager (Private)
 
 - (void)callProblem:(OACall *)call problem:(OAProblem *)problem;
@@ -133,10 +141,14 @@
 	SEL selector = [self getSelector:call];
 	id deleg = [delegates objectForKey:[NSString stringWithFormat:@"%p", call]];
 	if (deleg) {
-		[deleg performSelector:selector withObject:body];
+        SuppressPerformSelectorLeakWarning(
+            [deleg performSelector:selector withObject:body]
+        );
 		[delegates removeObjectForKey:call];
 	} else {
-		[delegate performSelector:selector withObject:body];
+        SuppressPerformSelectorLeakWarning(
+            [delegate performSelector:selector withObject:body]
+        );
 	}
 	@synchronized(self) {
 		isDispatching = NO;
