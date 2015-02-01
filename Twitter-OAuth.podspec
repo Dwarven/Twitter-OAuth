@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name                  = "Twitter-OAuth"
-  s.version               = "0.1.1"
+  s.version               = "0.1.2"
   s.summary               = "iOS Twitter OAuth Login and get UserInfo."
   s.homepage              = "https://github.com/Dwarven/Twitter-OAuth"
   s.license               = "MIT"
