@@ -98,9 +98,9 @@ NSString *callback = @"http://codegerms.com/callback";
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
     //  [indicator startAnimating];
     NSString *temp = [NSString stringWithFormat:@"%@",request];
-    //  BOOL result = [[temp lowercaseString] hasPrefix:@"http://codegerms.com/callback"];
+    //  BOOL result = [[temp lowercaseString] hasPrefix:callback];
     // if (result) {
-    NSRange textRange = [[temp lowercaseString] rangeOfString:[@"http://codegerms.com/callback" lowercaseString]];
+    NSRange textRange = [[temp lowercaseString] rangeOfString:[callback lowercaseString]];
     
     if(textRange.location != NSNotFound){
         
